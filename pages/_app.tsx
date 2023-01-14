@@ -5,16 +5,18 @@ import { createTheme } from '@mui/material/styles';
 import type { AppProps } from 'next/app'
 import Head from 'next/head';
 import createCache from '@emotion/cache';
+import { ApolloProvider } from '@apollo/client';
+import client from '../lib/apolloClient';
 
 import '../styles/globals.css'
 import ResponsiveAppBar from '../component/top-bar';
 
 interface MyAppProps extends AppProps {
-  emotionCache?: EmotionCache;
+    emotionCache?: EmotionCache;
 }
 
 export function createEmotionCache() {
-  return createCache({ key: 'css', prepend: true });
+    return createCache({ key: 'css', prepend: true });
 }
 const clientSideEmotionCache = createEmotionCache();
 
@@ -25,15 +27,17 @@ export default function App(props: MyAppProps) {
 
     return (
         <CacheProvider value={emotionCache}>
-            <Head>
-                <meta name="viewport" content="initial-scale=1, width=device-width" />
-            </Head>
-            <ResponsiveAppBar />
-            <ThemeProvider theme={theme}>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <Component {...pageProps} />
-            </ThemeProvider>
+            <ApolloProvider client={client}>
+                <Head>
+                    <meta name="viewport" content="initial-scale=1, width=device-width" />
+                </Head>
+                <ResponsiveAppBar />
+                <ThemeProvider theme={theme}>
+                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                    <CssBaseline />
+                    <Component {...pageProps} />
+                </ThemeProvider>
+            </ApolloProvider>
         </CacheProvider>
     );
 }
