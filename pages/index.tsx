@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useQuery } from '@apollo/client'
-import Link from 'next/link'
+import NextLink from 'next/link'
+import { Link } from '@mui/material';
 
 import { gql } from '../generated-gq/gql'
 import styles from '../styles/Home.module.css'
@@ -22,6 +23,20 @@ function gratPathToApp(app: { id: string }) {
     return '/application/' + app.id;
 }
 
+function AppLink(props: { app: { id: string, name: string } }) {
+    const { id, name } = props.app;
+    return (
+        <Link
+            href={gratPathToApp({ id })}
+            key={id}
+            color="inherit"
+            component={NextLink}
+        >
+        {name}
+        </Link>
+    )
+}
+
 export default function Home() {
     const { data, loading, error } = useQuery(APP_QUERY, {});
     return (
@@ -34,7 +49,7 @@ export default function Home() {
             <h1>All applications</h1>
             <Loading inProgress={loading} />
             {
-                data?.applications?.map(app => <div><Link href={gratPathToApp(app)}>[{app.id}] - {app.name}</Link></div>)
+                data?.applications?.map(app => <div><AppLink app={app} /></div>)
             }
         </div>
     )
