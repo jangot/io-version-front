@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 
-import { gql } from '../generated-gq/gql';
+import { gql } from '../generated-gq/gql'
 import styles from '../styles/Home.module.css'
+import Loading from '../component/Loading'
 
 const APP_QUERY = gql(/* GraphQL */ `
     query ApplicationsList {
@@ -31,6 +32,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <h1>All applications</h1>
+            <Loading inProgress={loading} />
             {
                 data?.applications?.map(app => <div><Link href={gratPathToApp(app)}>[{app.id}] - {app.name}</Link></div>)
             }

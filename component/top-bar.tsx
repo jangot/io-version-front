@@ -11,7 +11,17 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Products'];
+import Link from 'next/link'
+
+const pages: {
+    title: string
+    path: string
+}[] = [
+    {
+        title: 'Enviroments',
+        path: '/enviroments'
+    }
+];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -76,9 +86,9 @@ function ResponsiveAppBar() {
                                display: { xs: 'block', md: 'none' },
                             }}
                         >
-                          {pages.map((page) => (
-                              <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                 <Typography textAlign="center">{page}</Typography>
+                          {pages.map((page, i) => (
+                              <MenuItem key={i} onClick={handleCloseNavMenu}>
+                                 <Typography textAlign="center">{page.title}</Typography>
                               </MenuItem>
                           ))}
                         </Menu>
@@ -103,14 +113,10 @@ function ResponsiveAppBar() {
                       LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
+                        {pages.map((page, i) => (
+                            <Link href={page.path} key={i} >
+                            {page.title}
+                            </Link>
                         ))}
                     </Box>
                 </Toolbar>
