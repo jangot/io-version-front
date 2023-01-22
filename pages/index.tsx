@@ -1,13 +1,14 @@
 import Head from 'next/head'
 import { useQuery } from '@apollo/client';
+import Link from 'next/link'
 
 import { gql } from '../generated-gq/gql';
 import styles from '../styles/Home.module.css'
-import Application from '../component/Application'
 
 const APP_QUERY = gql(/* GraphQL */ `
     query ApplicationsList {
         applications {
+            id
             name
             versions {
                 version
@@ -15,6 +16,10 @@ const APP_QUERY = gql(/* GraphQL */ `
         }
     }
 `);
+
+function gratPathToApp(app: { id: string }) {
+    return '/application/' + app.id;
+}
 
 export default function Home() {
     const { data, loading, error } = useQuery(APP_QUERY, {});
@@ -27,7 +32,7 @@ export default function Home() {
             </Head>
             <h1>All applications</h1>
             {
-                data?.applications?.map(app => <Application application={app} />)
+                data?.applications?.map(app => <div><Link href={gratPathToApp(app)}>[{app.id}] - {app.name}</Link></div>)
             }
         </div>
     )
