@@ -30,6 +30,7 @@ const COMPONENT_QUERY = gql(/* GraphQL */ `
             }
             deploys {
                 id
+                createdAt
                 version {
                     version
                     applicationId
@@ -51,6 +52,22 @@ export default function Application(props: ApplicationProps) {
     return (
         <>
             { loading && 'Loading...' }
+            {
+                data
+                && data.application
+                && (
+                    <div>
+                        All versions
+                        <ul>
+                            {
+                                data.application.versions?.map((it) => {
+                                    return <li>{ it.version }</li>
+                                })
+                            }
+                        </ul>
+                    </div>
+                )
+            }
             {
                  data
                  && data.environments

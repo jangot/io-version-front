@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { Deploy, EnvironmentItemProps, EnvironmentItemRule, Versions } from './EnvironmentItemProps';
-
+import moment from 'moment';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,7 +34,11 @@ export default function EnvironmentItem(props: EnvironmentItemProps) {
 
     return (
         <div>
-            <h2>{ props.env.name }</h2>
+            <h2>
+                [{ props.env.id }]
+                {' - '}
+                { props.env.name }
+            </h2>
             <p>{ props.env.description }</p>
             <div>
                 <Box sx={{ flexGrow: 1 }}>
@@ -65,7 +69,11 @@ export default function EnvironmentItem(props: EnvironmentItemProps) {
                                 deploys.length > 0
                                     ? (deploys).map((deploy) => (
                                         <div>
-                                            { deploy?.version?.version }
+                                            {
+                                                deploy?.version?.version
+                                                + ' => ' +
+                                                moment(deploy?.createdAt).format('DD-MM-YYYY HH:mm')
+                                            }
                                         </div>
                                     ))
                                     : 'no deployed versions'

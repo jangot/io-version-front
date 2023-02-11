@@ -1,8 +1,3 @@
-// export type DeployEnv = {
-//     id: string,
-//     name: string
-// }
-
 export type Versions = {
     version: string,
     applicationId: string
@@ -10,6 +5,7 @@ export type Versions = {
 
 export type Deploy = {
     id: string,
+    createdAt: Date,
     version?: Versions | undefined | null
 }
 
@@ -28,5 +24,4 @@ export type EnvironmentItemProps = {
         deploys?: Deploy[] | null | undefined,
     },
     appId: string
-    // versions?: Versions[] | undefined | null,
 }
