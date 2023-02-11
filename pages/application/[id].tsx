@@ -7,12 +7,10 @@ import styles from '../../styles/Home.module.css'
 import Application from '../../component/Application'
 
 const APP_QUERY = gql(/* GraphQL */ `
-    query ApplicationItem($id: ID) {
+    query ApplicationPage($id: ID) {
         application(id: $id ) {
+            id
             name
-            versions {
-                version
-            }
         }
     }
 `);
@@ -20,7 +18,11 @@ const APP_QUERY = gql(/* GraphQL */ `
 export default function ApplicatonPage() {
     const router = useRouter();
     const id = router.query.id?.toString();
-    const { data, loading, error } = useQuery(APP_QUERY, { variables: { id  } });
+    if (!id) {
+        return '';
+    }
+
+    const { data, loading, error } = useQuery(APP_QUERY, { variables: { id } });
     return (
         <div className={styles.container}>
             <Head>
@@ -30,8 +32,11 @@ export default function ApplicatonPage() {
             </Head>
             { loading && 'Loading...' }
             {
+                data && data.application && <h1>{data.application.name}</h1>
+            }
+            {
                 data && data.application
-                ? <Application application={data.application} />
+                ? <Application applicationId={data.application.id} />
                 : 'Not found'
             }
         </div>
